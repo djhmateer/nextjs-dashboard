@@ -2,7 +2,7 @@ import { Card } from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchRevenue, fetchLatestInvoices } from '@/app/lib/data';
+import { fetchRevenue, fetchLatestInvoices, daveTime } from '@/app/lib/data';
  
 export default async function Page() {
   console.log('fetching revenue');
@@ -10,11 +10,14 @@ export default async function Page() {
   console.log('got revenue', revenue);
   const latestInvoices = await fetchLatestInvoices();
   console.log('got latestInvoices', latestInvoices);
+  const time = await daveTime();
+  console.log('got time', time);
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard
       </h1>
+      <h2>time is {time}</h2>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {/* <Card title="Collected" value={totalPaidInvoices} type="collected" /> */}
         {/* <Card title="Pending" value={totalPendingInvoices} type="pending" /> */}
