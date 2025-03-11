@@ -14,8 +14,7 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 export async function daveTime() {
   try {
     const data = await sql`SELECT NOW();`;
-
-    return data;
+    return data[0].now.toISOString();
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch time.');
