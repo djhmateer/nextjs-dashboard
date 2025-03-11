@@ -119,10 +119,11 @@ export async function GET() {
   // Drop all existing tables
   console.log('dropping schema');
   await sql`DROP SCHEMA public CASCADE;`;
-  
+  console.log('dropped schema');
+
   console.log('creating schema');
   await sql`CREATE SCHEMA public;`;
-
+  console.log('created schema');
   // this works (no transaction)
   // let result = await sql`
   //   CREATE TABLE IF NOT EXISTS users11 (
@@ -138,7 +139,9 @@ export async function GET() {
 
   // sql begin is a transaction begin
   
+  console.log('begin transaction');
   try {
+    const foo = 1
     const result = await sql.begin((sql) => [
       seedUsers(),
       seedCustomers(),
@@ -146,6 +149,8 @@ export async function GET() {
       seedInvoices(),
       seedRevenue(),
     ]);
+
+  console.log('end transaction');
 
 
   // this works (under a transaction)
@@ -163,6 +168,7 @@ export async function GET() {
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
+    console.log('error', error);
     return Response.json({ error }, { status: 500 });
   }
 }
