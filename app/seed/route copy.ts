@@ -3,17 +3,7 @@ import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
-// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-// const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, { ssl: 'require' });
-
-// new db instance
-// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-
-const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, { ssl: 'require' });
-// const sql = postgres(process.env.POSTGRES_URL_NON_POOLING!, { ssl: 'require',
-  // connect_timeout: 10,
-  // idle_timeout: 10,
-//  });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -113,53 +103,13 @@ async function seedRevenue() {
 }
 
 export async function GET() {
-  // sql begin is a transaction begin
-  // const result = await sql.begin((sql) => [
-
-  // Drop all existing tables
-  console.log('dropping schema');
-  await sql`DROP SCHEMA public CASCADE;`;
-  
-  console.log('creating schema');
-  await sql`CREATE SCHEMA public;`;
-
-  // this works (no transaction)
-  // let result = await sql`
-  //   CREATE TABLE IF NOT EXISTS users11 (
-  //     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  //     name VARCHAR(255) NOT NULL,
-  //     email TEXT NOT NULL UNIQUE,
-  //     password TEXT NOT NULL
-  //   );`
-
-  // return Response.json({ message: 'Foo' });
-  // console.log('users:', result);
-
-
-  // sql begin is a transaction begin
-  
   try {
-    const result = await sql.begin((sql) => [
-      seedUsers(),
-      seedCustomers(),
-      // fails with prepare statement "asdf" does not exist (for all 3 'transactions')
-      seedInvoices(),
-      seedRevenue(),
-    ]);
-
-
-  // this works (under a transaction)
-  // await sql.begin((sql) => [
-  //   sql`
-  //   CREATE TABLE IF NOT EXISTS users2 (
-  //     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  //     name VARCHAR(255) NOT NULL,
-  //     email TEXT NOT NULL UNIQUE,
-  //     password TEXT NOT NULL
-  //   );
-  // `]);
-
-
+    // const result = await sql.begin((sql) => [
+    //   // seedUsers(),
+    //   // seedCustomers(),
+    //   // seedInvoices(),
+    //   // seedRevenue(),
+    // ]);
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
