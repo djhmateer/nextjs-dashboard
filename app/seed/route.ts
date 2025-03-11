@@ -145,7 +145,6 @@ export async function GET() {
     const result = await sql.begin((sql) => [
       seedUsers(),
       seedCustomers(),
-      // fails with prepare statement "asdf" does not exist (for all 3 'transactions')
       seedInvoices(),
       seedRevenue(),
     ]);
