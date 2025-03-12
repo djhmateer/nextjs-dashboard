@@ -1,3 +1,4 @@
 export default function Page() {
-    return <p>Invoices Page</p>;
+    const timestamp = new Date().toString(); 
+    return <p>Server Side Rendered. Static. Cached: {timestamp}</p>;
   }
