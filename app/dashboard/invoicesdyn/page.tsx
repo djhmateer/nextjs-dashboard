@@ -3,7 +3,7 @@ export default function Page() {
   
   return (
     <div>
-      <p>Server Side Rendered. Dynamic. Not cached. {timestamp}</p>
+      <p>Server Side Rendered. Dynamic. Not cached. dynamic = 'force-dynamic' {timestamp}</p>
     </div>
   );
 }
