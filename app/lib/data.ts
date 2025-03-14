@@ -159,6 +159,7 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
+    // this will throw if the UUID is invalid
     const data = await sql<InvoiceForm[]>`
       SELECT
         invoices.id,
@@ -175,6 +176,7 @@ export async function fetchInvoiceById(id: string) {
       amount: invoice.amount / 100,
     }));
 
+    console.log("invoice is" + invoice); // Invoice is an empty array [] when can't find ie an invalid UUID
     return invoice[0];
   } catch (error) {
     console.error('Database Error:', error);
