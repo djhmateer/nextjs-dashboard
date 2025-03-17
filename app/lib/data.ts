@@ -13,10 +13,13 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function daveTime() {
   try {
+    const start = performance.now();
     const data = await sql`SELECT NOW();`;
-    console.log('Raw data:', data);
-    console.log('First row:', data[0]);
-    console.log('now value:', data[0].now);
+    const duration = Math.round(performance.now() - start);
+    console.log(`dateTime ie select NOW() from db took ${duration}ms`);
+    // console.log('Raw data:', data);
+    // console.log('First row:', data[0]);
+    // console.log('now value:', data[0].now);
     return data[0].now.toString();
   } catch (error) {
     console.error('Database Error:', error);
@@ -29,12 +32,12 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // console.log('Fetching revenue data...');
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue[]>`SELECT * FROM revenue`;
 
-    console.log('Data fetch completed after 3 seconds.');
+    // console.log('Data fetch completed after 3 seconds.');
 
     return data;
   } catch (error) {
