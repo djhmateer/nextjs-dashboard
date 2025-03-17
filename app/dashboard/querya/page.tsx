@@ -8,7 +8,8 @@ export default async function Page() {
   return (
 
     <div>
-      <p>Server Side Rendered. Cached. ie no dynamic = 'force-dynamic' {timestamp}</p>
+      {/* <p>Server Side Rendered. Cached. ie no dynamic = 'force-dynamic' {timestamp}</p> */}
+      <p>Server Side Rendered.  dynamic = 'force-dynamic' {timestamp}</p>
       <p>Time is from page is {timestamp}</p>
       <p>Time is from db is {now}</p>
     </div>
@@ -16,4 +17,4 @@ export default async function Page() {
 }
 
 // Tell Next.js to render dynamically
-// export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic';
