@@ -21,6 +21,7 @@ const links = [
   { name: 'Invoices', href: '/dashboard/invoices', icon: DocumentDuplicateIcon },
   { name: 'InvoicesStatic', href: '/dashboard/invoicessta', icon: DocumentDuplicateIcon },
   { name: 'InvoicesDynamic', href: '/dashboard/invoicesdyn', icon: DocumentDuplicateIcon },
+  { name: 'QueryA', href: '/dashboard/querya', icon: DocumentDuplicateIcon },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
 ];
 

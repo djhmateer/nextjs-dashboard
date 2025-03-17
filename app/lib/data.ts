@@ -9,7 +9,50 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+
+// can get the sql outputted, but not the query time
+const sql = postgres(process.env.POSTGRES_URL!, { 
+  ssl: 'require',
+  debug: (connection: number, query: string, parameters: any[], paramTypes: any[]) => {
+    console.log("  ");
+    console.log(' PG Executed query:', query);
+    if (parameters && parameters.length > 0) {
+      console.log(' PG parameters:', parameters);
+    }
+  },
+});
+
+
+// const sql = postgres(process.env.POSTGRES_URL!, { 
+//   // ssl: 'require',
+//   debug: (connection, query, parameters, paramTypes) => {
+//     const start = performance.now();
+    
+//     return function () { // Ensure a function is returned
+//       const duration = Math.round(performance.now() - start);
+//       console.log("PG Executed query:", query);
+//       console.log(`PG query duration: ${duration}ms`);
+//       if (parameters?.length) {
+//         console.log('PG with parameters:', parameters);
+//       }
+//     };
+//   }
+// });
+
+
+export async function fetchQueryA() {
+  try {
+    const start = performance.now();
+    const data = await sql`SELECT NOW();`;
+    const duration = Math.round(performance.now() - start);
+    console.log(` fetchQueryA ie select NOW() from db took ${duration}ms`);
+    return data[0].now.toString();
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch time.');
+  }
+}
 
 export async function daveTime() {
   try {
@@ -27,6 +70,7 @@ export async function daveTime() {
   }
 }
 
+// used on Dashboard Home
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
@@ -35,7 +79,11 @@ export async function fetchRevenue() {
     // console.log('Fetching revenue data...');
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
+    const start = performance.now();
+    // const query = "SELECT * FROM revenue" 
     const data = await sql<Revenue[]>`SELECT * FROM revenue`;
+    const duration = Math.round(performance.now() - start);
+    console.log(`SELECT from revenue took ${duration}ms`);
 
     // console.log('Data fetch completed after 3 seconds.');
 
@@ -48,12 +96,15 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
+    const start = performance.now();
     const data = await sql<LatestInvoiceRaw[]>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
       FROM invoices
       JOIN customers ON invoices.customer_id = customers.id
       ORDER BY invoices.date DESC
       LIMIT 5`;
+    const duration = Math.round(performance.now() - start);
+    console.log(`fetchLatestInvoices: SELECT from invoices join customers limit 5 took ${duration}ms`);
 
     const latestInvoices = data.map((invoice) => ({
       ...invoice,
